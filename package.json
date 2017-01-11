@@ -1,6 +1,6 @@
 {
     "name": "xlfpackage",
-    "version": "0.0.7",
+    "version": "0.0.8",
     "main": "xlfpackage.js",
     "dependencies": {
         "glob": "7.1.1",

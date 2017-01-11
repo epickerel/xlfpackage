@@ -41,13 +41,26 @@ function parseXLF(xlf, cb) {
         var sourceEl = tunit.children.find(el => { return el.name === 'source'; });
         return {
             id: tunit.attributes.id,
-            source: sourceEl.children.length ? sourceEl.children[0].value : null,
-            target: targetEl.children.length ? targetEl.children[0].value : null,
+            source: sourceEl.children.length ? resolveChildrenToString(sourceEl) : null,
+            target: targetEl.children.length ? resolveChildrenToString(targetEl) : null,
             state: targetEl.attributes ? targetEl.attributes.state : '',
             note: noteEl && noteEl.children.length ?  noteEl.children[0].value : null
         };
     });
     return simpler;
+}
+
+function resolveChildrenToString(el) {
+    return el.children.reduce((v, el) => {
+        if (el.type === 'text') {
+            return v + el.value;
+        }
+        v += `<${el.name}`;
+        for (var k in el.attributes) {
+            v += ` ${k}="${el.attributes[k]}"`;
+        }
+        return v + '>';
+    }, '');
 }
 
 module.exports = pathToPackage => {
