@@ -59,7 +59,7 @@ function resolveChildrenToString(el) {
         for (var k in el.attributes) {
             v += ` ${k}="${el.attributes[k]}"`;
         }
-        return v + '>';
+        return v + '/>';
     }, '');
 }
 
