@@ -1,11 +1,11 @@
 {
-    "name": "xlfpackage",
-    "version": "0.0.9",
-    "main": "xlfpackage.js",
-    "dependencies": {
-        "glob": "7.1.1",
-        "xml-reader": "2.4.3",
-        "mkpath": "1.0.0",
-        "path": "0.12.7"
-    }
+  "name": "xlfpackage",
+  "version": "0.0.10",
+  "main": "xlfpackage.js",
+  "dependencies": {
+    "glob": "7.1.1",
+    "mkpath": "1.0.0",
+    "path": "0.12.7",
+    "xml-reader-datatest": "^0.0.1"
+  }
 }

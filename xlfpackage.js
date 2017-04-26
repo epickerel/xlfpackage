@@ -2,7 +2,12 @@ var fs = require('fs');
 var glob = require('glob');
 var mkpath = require('mkpath');
 var path = require('path');
-var XmlReader = require('xml-reader');
+var XmlReader = require('xml-reader-datatest');
+const reader = XmlReader.create({
+    dataEmitTest: (data) => {
+        return true;
+    }
+});
 
 function writeFile(filepath, content, cb) {
     mkpath(path.dirname(filepath), function (err) {
