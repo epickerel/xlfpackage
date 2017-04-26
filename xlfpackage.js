@@ -3,11 +3,6 @@ var glob = require('glob');
 var mkpath = require('mkpath');
 var path = require('path');
 var XmlReader = require('xml-reader-datatest');
-const reader = XmlReader.create({
-    dataEmitTest: (data) => {
-        return true;
-    }
-});
 
 function writeFile(filepath, content, cb) {
     mkpath(path.dirname(filepath), function (err) {
@@ -38,8 +33,13 @@ function gatherXlfPackage(location) {
 }
 
 function parseXLF(xlf, cb) {
-    var res = XmlReader.parseSync(xlf);
-    var tunits = res.children[0].children[0].children.filter(el => { return el.name === 'trans-unit'; });
+    var res = XmlReader.parseSync(xlf, {
+        parentNodes: false,
+        dataEmitTest: (data) => {
+            return true;
+        }
+    });
+    var tunits = res.children.filter(el => { return el.type === 'element'; })[0].children.filter(el => { return el.type === 'element'; })[0].children.filter(el => { return el.name === 'trans-unit'; });
     var simpler = tunits.map(tunit => {
         var targetEl = tunit.children.find(el => { return el.name === 'target'; });
         var noteEl = tunit.children.find(el => {return el.name ==='note'; });
