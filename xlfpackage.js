@@ -4,14 +4,9 @@ var mkpath = require('mkpath');
 var path = require('path');
 var XmlReader = require('xml-reader-datatest');
 
-function writeFile(filepath, content, cb) {
-    mkpath(path.dirname(filepath), function (err) {
-        if (err) {
-            cb(err);
-        } else {
-            fs.writeFileSync(filepath, content);
-        }
-    });
+function writeFile(filepath, content) {
+    mkpath.sync(path.dirname(filepath));
+    fs.writeFileSync(filepath, content);
 }
 
 function gatherXlfPackage(location) {
@@ -184,11 +179,7 @@ module.exports = pathToPackage => {
   </file>
 </xliff>
 `;
-                writeFile(path, xml, err => {
-                    if (err) {
-                        return console.error(err);
-                    }
-                });
+                writeFile(path, xml);
             });
         }
     };
