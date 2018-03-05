@@ -9,9 +9,7 @@ function writeFile(filepath, content, cb) {
         if (err) {
             cb(err);
         } else {
-            fs.writeFile(filepath, content, function(err) {
-                cb(err);
-            }); 
+            fs.writeFileSync(filepath, content);
         }
     });
 }
