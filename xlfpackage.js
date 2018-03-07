@@ -26,6 +26,7 @@ function gatherXlfPackage(location) {
 }
 
 function parseXLF(xlf, cb) {
+    console.log('sdfsdf')
     var res = XmlReader.parseSync(xlf, {
         parentNodes: false,
         dataEmitTest: (data) => {
@@ -35,9 +36,10 @@ function parseXLF(xlf, cb) {
     var tunits = res.children.filter(el => { return el.type === 'element'; })[0].children.filter(el => { return el.type === 'element'; })[0].children.filter(el => { return el.name === 'trans-unit'; });
     var simpler = tunits.map(tunit => {
         var targetEl = tunit.children.find(el => { return el.name === 'target'; });
-        var descEl = tunit.children.find(el => {return el.name ==='note' && el.from === 'description'; });
-        var meaningEl = tunit.children.find(el => {return el.name ==='note' && el.from === 'meaning'; });
+        var descEl = tunit.children.find(el => {return el.name ==='note' && el.attributes.from === 'description'; });
+        var meaningEl = tunit.children.find(el => {return el.name ==='note' && el.attributes.from === 'meaning'; });
         var sourceEl = tunit.children.find(el => { return el.name === 'source'; });
+        console.log('fooooo', descEl, meaningEl)
         return {
             id: tunit.attributes.id,
             source: sourceEl.children.length ? resolveChildrenToString(sourceEl) : null,
