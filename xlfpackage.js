@@ -35,14 +35,16 @@ function parseXLF(xlf, cb) {
     var tunits = res.children.filter(el => { return el.type === 'element'; })[0].children.filter(el => { return el.type === 'element'; })[0].children.filter(el => { return el.name === 'trans-unit'; });
     var simpler = tunits.map(tunit => {
         var targetEl = tunit.children.find(el => { return el.name === 'target'; });
-        var noteEl = tunit.children.find(el => {return el.name ==='note'; });
+        var descEl = tunit.children.find(el => {return el.name ==='note' && el.from === 'description'; });
+        var meaningEl = tunit.children.find(el => {return el.name ==='note' && el.from === 'meaning'; });
         var sourceEl = tunit.children.find(el => { return el.name === 'source'; });
         return {
             id: tunit.attributes.id,
             source: sourceEl.children.length ? resolveChildrenToString(sourceEl) : null,
             target: targetEl.children.length ? resolveChildrenToString(targetEl) : null,
             state: targetEl.attributes ? targetEl.attributes.state : '',
-            note: noteEl && noteEl.children.length ?  noteEl.children[0].value : null
+            note: descEl && descEl.children.length ?  descEl.children[0].value : null,
+            meaning: meaningEl && meaningEl.children.length ?  meaningEl.children[0].value : null
         };
     });
     return simpler;
@@ -169,7 +171,8 @@ module.exports = pathToPackage => {
         <source>${s.source}</source>
         <target` +
         (s.target ? ` state="${s.state ? 'translated' : ''}">${s.target ? s.target : ''}</target>\n` : '/>\n') +
-        (s.note ? `        <note>${s.note}</note>\n` : '') +
+        (s.note ? `        <note from="description">${s.note}</note>\n` : '') +
+        (s.meaning ? `        <note from="meaning">${s.meaning}</note>\n` : '') +
       `      </trans-unit>`;
 
                 });
