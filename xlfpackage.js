@@ -26,7 +26,6 @@ function gatherXlfPackage(location) {
 }
 
 function parseXLF(xlf, cb) {
-    console.log('sdfsdf')
     var res = XmlReader.parseSync(xlf, {
         parentNodes: false,
         dataEmitTest: (data) => {
@@ -39,7 +38,6 @@ function parseXLF(xlf, cb) {
         var descEl = tunit.children.find(el => {return el.name ==='note' && el.attributes.from === 'description'; });
         var meaningEl = tunit.children.find(el => {return el.name ==='note' && el.attributes.from === 'meaning'; });
         var sourceEl = tunit.children.find(el => { return el.name === 'source'; });
-        console.log('fooooo', descEl, meaningEl)
         return {
             id: tunit.attributes.id,
             source: sourceEl.children.length ? resolveChildrenToString(sourceEl) : null,
@@ -113,10 +111,13 @@ module.exports = pathToPackage => {
                     if (!existing) {
                         existing = {
                             id: s.id,
-                            source: s.source,
                             langs: {}
                         };
                         strs.push(existing);
+                    }
+                    if (xlf.langLoc === 'en/common') {
+                        //Use english source as authoritative version
+                        existing.source = s.source;
                     }
                     existing.langs[xlf.langLoc] = s.target || '';
                 });
